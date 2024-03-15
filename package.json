@@ -39,7 +39,7 @@
     "wrangler": "^2.8.0"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18.0.0"
   },
   "sideEffects": false,
   "main": "dist/worker.js",
