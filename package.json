@@ -3,20 +3,20 @@
   "name": "remix-app-template",
   "description": "",
   "license": "",
+  "type": "module",
   "scripts": {
-    "build": "cross-env NODE_ENV=production remix build",
-    "dev": "cross-env NODE_ENV=development run-p dev:*",
-    "dev:remix": "remix watch",
-    "dev:wrangler": "cross-env NODE_ENV=development wrangler pages dev ./public --kv DOWNVOTE --compatibility-date=2022-11-29",
-    "start": "npm run dev:wrangler",
+    "build": "remix vite:build",
+    "deploy": "wrangler pages deploy ./build/client",
+    "dev": "remix vite:dev",
+    "start": "wrangler pages dev ./build/client --kv DOWNVOTE",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepare": "git config --local core.hooksPath .githooks",
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@remix-run/cloudflare": "^1.11.0",
-    "@remix-run/cloudflare-pages": "^1.11.0",
-    "@remix-run/react": "^1.11.0",
+    "@remix-run/cloudflare": "^2.8.1",
+    "@remix-run/cloudflare-pages": "^2.8.1",
+    "@remix-run/react": "^2.8.1",
     "he": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,11 +24,11 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20221111.1",
-    "@remix-run/dev": "^1.11.0",
+    "@cloudflare/workers-types": "^4.20230518.0",
+    "@remix-run/dev": "^2.8.1",
     "@types/he": "^1.1.2",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "esbuild": "0.17.3",
@@ -36,6 +36,8 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.3",
     "typescript": "^5.1.0",
+    "vite": "^5.1.0",
+    "vite-tsconfig-paths": "^4.2.1",
     "wrangler": "^3.24.0"
   },
   "engines": {

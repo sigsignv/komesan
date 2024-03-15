@@ -1,5 +1,5 @@
 import { createId, DownVote } from "./DOWNVOTE";
-import { decode } from "he";
+import * as he from "he";
 
 export interface HackerNewsSeachResult {
     hits: Hit[];
@@ -106,7 +106,7 @@ const createStories = (result: HackerNewsSeachResult): HackerNewsStory[] => {
                 matchedStory.comments.push({
                     author: hit.author,
                     commentUrl: createStoryUrl(hit.objectID),
-                    text: decode(hit.comment_text)
+                    text: he.decode(hit.comment_text)
                 });
             } else {
                 stories.push({
@@ -116,7 +116,7 @@ const createStories = (result: HackerNewsSeachResult): HackerNewsStory[] => {
                         {
                             author: hit.author,
                             commentUrl: createStoryUrl(hit.objectID),
-                            text: decode(hit.comment_text)
+                            text: he.decode(hit.comment_text)
                         }
                     ]
                 });

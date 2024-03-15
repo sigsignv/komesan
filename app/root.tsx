@@ -2,8 +2,10 @@ import { MetaFunction } from "@remix-run/cloudflare";
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
-    const description = `はてなブックマークとTwitterのコメントを表示するアプリ`;
-    return { title: "Komesan", description };
+    return [
+        { title: "Komesan" },
+        { name: "description", content: "はてなブックマークとTwitterのコメントを表示するアプリ" }
+    ];
 };
 
 export default function App() {

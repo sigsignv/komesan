@@ -1,4 +1,4 @@
-import { ActionArgs, redirect } from "@remix-run/cloudflare";
+import { ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { z } from "zod";
 import { createStorage } from "../../lib/DOWNVOTE";
 
@@ -17,7 +17,7 @@ const formDataToJSON = (data: FormData) => {
  * });
  * @param request
  */
-export async function action({ request, context }: ActionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
     const token = request.headers.get("x-komesan-token");
     if (token !== context.KOMESAN_TOKEN) {
         console.warn("Invalid token", token);

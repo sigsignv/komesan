@@ -1,11 +1,11 @@
 import { ActionFunction, HeadersFunction, redirect } from "@remix-run/cloudflare";
-import { Form, Link, useActionData, useLoaderData, useTransition } from "@remix-run/react";
+import { Form, Link, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { fetchTwitter, Tweets } from "../lib/Twitter";
 import { BookmarkSite, fetchHatenaBookmark } from "../lib/Bookmark";
 import { LinkItUrl } from "react-linkify-it";
 import { ChangeEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createStorage } from "../lib/DOWNVOTE";
-import styles from "../styles/simple.css";
+import styles from "../styles/simple.css?url";
 import { fetchHackerNews, HackerNewsResult } from "../lib/HackerNews";
 import { LoaderFunction } from "@remix-run/router";
 
@@ -143,7 +143,7 @@ const DownVote = ({
 }) => {
     const actionData = useActionData();
     const inputRef = useRef<HTMLButtonElement>(null);
-    const transition = useTransition();
+    const navigation = useNavigation();
     useEffect(() => {
         if (actionData && actionData?.errors) {
             inputRef?.current?.focus();
@@ -152,7 +152,7 @@ const DownVote = ({
     return (
         <>
             <Form method="post">
-                <fieldset disabled={transition.state === "submitting"}>
+                <fieldset disabled={navigation.state === "submitting"}>
                     <input type="hidden" value={id} name={"id"} />
                     <input type="hidden" value={type} name={"type"} />
                     <input type="hidden" value={url} name={"url"} />
