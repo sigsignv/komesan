@@ -139,7 +139,7 @@ const DownVote = ({
     id: string;
     min: boolean;
 }) => {
-    const actionData = useActionData();
+    const actionData = useActionData<typeof action>();
     const inputRef = useRef<HTMLButtonElement>(null);
     const navigation = useNavigation();
     useEffect(() => {
