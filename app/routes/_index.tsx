@@ -1,4 +1,4 @@
-import { ActionFunction, HeadersFunction, redirect } from "@remix-run/cloudflare";
+import { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { Form, Link, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { fetchTwitter, Tweets } from "../lib/Twitter";
 import { BookmarkSite, fetchHatenaBookmark } from "../lib/Bookmark";
@@ -7,7 +7,6 @@ import { ChangeEventHandler, useCallback, useEffect, useMemo, useRef, useState }
 import { createStorage } from "../lib/DOWNVOTE";
 import styles from "../styles/simple.css?url";
 import { fetchHackerNews, HackerNewsResult } from "../lib/HackerNews";
-import { LoaderFunction } from "@remix-run/router";
 
 export function links() {
     return [{ rel: "stylesheet", href: styles }];
@@ -19,7 +18,7 @@ export const headers: HeadersFunction = () => {
     };
 };
 
-export let loader: LoaderFunction = async ({ context, request, params }) => {
+export const loader = async ({ context, request, params }: LoaderFunctionArgs) => {
     const url = new URL(request.url);
     const urlParam = url.searchParams.get("url");
     const enableMinMode = url.searchParams.has("min");
@@ -39,8 +38,8 @@ export let loader: LoaderFunction = async ({ context, request, params }) => {
             hackerNews: undefined
         };
     }
-    const TWITTER_TOKEN = context.TWITTER_TOKEN as string;
-    const storage = createStorage(context);
+    const TWITTER_TOKEN = context.cloudflare.env.TWITTER_TOKEN;
+    const storage = createStorage(context.cloudflare.env);
     const downVotes = await storage.getDownVotes();
     const startTime = Date.now();
     const [hatebu, twitter, hackerNews] = await Promise.all([
@@ -107,7 +106,7 @@ export const validate = ({ url, type, id }: NullableFormValue<SubmitFormValue>) 
     }
 };
 // server
-export const action: ActionFunction = async ({ request, context }) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const form = {
         url: formData.get("url"),
@@ -121,8 +120,7 @@ export const action: ActionFunction = async ({ request, context }) => {
             errors: errors.map((e) => e.message).join(",")
         };
     }
-    // @ts-expect-error: no type
-    const storage = createStorage(context);
+    const storage = createStorage(context.cloudflare.env);
     await storage.downVote({
         type: form.type as string,
         id: form.id as string

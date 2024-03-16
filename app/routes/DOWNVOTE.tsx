@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { z } from "zod";
-import { createStorage } from "../../lib/DOWNVOTE";
+import { createStorage } from "../lib/DOWNVOTE";
 
 const formDataToJSON = (data: FormData) => {
     return Object.fromEntries(data.entries());
@@ -19,7 +19,7 @@ const formDataToJSON = (data: FormData) => {
  */
 export async function action({ request, context }: ActionFunctionArgs) {
     const token = request.headers.get("x-komesan-token");
-    if (token !== context.KOMESAN_TOKEN) {
+    if (token !== context.cloudflare.env.KOMESAN_TOKEN) {
         console.warn("Invalid token", token);
         return redirect(`/`);
     }
@@ -35,8 +35,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
         type,
         users
     });
-    // @ts-expect-error: no types
-    const downvoteStorage = await createStorage(context);
+    const downvoteStorage = createStorage(context.cloudflare.env);
     const requests = users.map((user) => {
         return {
             id: user,
